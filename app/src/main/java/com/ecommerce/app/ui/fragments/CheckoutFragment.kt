@@ -77,7 +77,9 @@ class CheckoutFragment : Fragment() {
         binding.topProgressLyt.checkoutLineView.setBackgroundColor(requireContext().getColor(red))
         binding.topProgressLyt.checkoutTV.setTextColor(requireContext().getColor(black))
 
-
+        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
+        binding.dataLayout.visibility = View.GONE
+        binding.footer.visibility = View.GONE
     }
 
     private fun setProgressBar(b: Boolean) {
@@ -105,8 +107,9 @@ class CheckoutFragment : Fragment() {
                 cartData.totalPrice.toString()
             )
         )
-
-        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
+        binding.dataLayout.visibility = View.VISIBLE
+        binding.footer.visibility = View.VISIBLE
+        //((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
     }
 
     private fun setAddressDataOnViews(item: AddressItem) {
@@ -118,11 +121,6 @@ class CheckoutFragment : Fragment() {
         binding.state.text= item.state
         binding.mobileTV.text= requireContext().getString(R.string.mobile_str,item.mobile)
 
-        /*if(item.isDefault==1)
-        {
-            binding.defaultIV.setColorFilter(context.getColor(R.color.red))
-            binding.defaultTV.setTextColor(context.getColor(R.color.red))
-        }*/
 
         binding.changeAddressBTN.setOnClickListener {
             findNavController().navigate(R.id.action_checkoutFragment_to_addressFragment)
@@ -172,7 +170,6 @@ class CheckoutFragment : Fragment() {
                     if (it.data != null && it.data.status == 1) {
                         if (it.data.data.isNotEmpty()) {
                             addressItemList = it.data.data as ArrayList<AddressItem>
-                           // adapter.setItems(addressItemList)
                             var addressItem=addressItemList.find { addressItem ->addressItem.isDefault==1  }
                             addressItem?.let { it1 -> setAddressDataOnViews(it1) }
 

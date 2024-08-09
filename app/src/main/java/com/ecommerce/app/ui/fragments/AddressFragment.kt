@@ -202,6 +202,7 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
                 }
 
                 ResourceViewState.Status.LOADING -> {
+                    DebugHandler.log("Loading ....")
                     setProgressBar(true)
                 }
             }
@@ -252,7 +253,6 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
             }
 
             ScreenName.ACTION_DEFAULT_ADDRESS.value -> {
-                //viewModel.deleteAddress(ScreenName.ACTION_DELETE_ADDRESS.value,selectedItem.id)
                 var addressReq = AddressReq()
                 addressReq.isDefault=1
                 addressReq.name=selectedItem.name

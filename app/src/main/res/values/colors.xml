@@ -26,14 +26,13 @@
     <color name="white30Percentage">#B3FFFFFF</color>
     <color name="text_main_head">@color/black60Percentage</color>
 
-
-    <!-- <color name="ananda_bg">@color/light_blue</color>-->
     <color name="splash_bg">@color/white</color>
     <color name="ananda_logo_color">#c0ac15</color>
     <color name="shimmer_placeholder">@color/med_grey</color>
     <!--MAB screen colors-->
     <color name="mab_text">@color/white</color>
-    <color name="dull_white">#EDF3F6</color>
+    <!--<color name="dull_white">#EDF3F6</color>-->
+   <color name="dull_white">#EDF3F6</color>
     <!-- <color name="ananda_bg">#ffcb08</color>-->
 
     <color name="Black0Percent">#00000000</color>

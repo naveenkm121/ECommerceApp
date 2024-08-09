@@ -41,7 +41,6 @@ class AddressViewModel @Inject constructor(private val userRepository: UserRepos
             }
 
             RequestApiType.REQUEST_UPDATE_ADDRESS.value -> {
-                DebugHandler.log("addressId ::  $addressId")
                 userRepository.updateAddress(addressId, request)
             }
 

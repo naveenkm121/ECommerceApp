@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dataLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -35,6 +36,7 @@
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/padding12"
+                android:layout_marginTop="@dimen/margin10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topProgressLyt">
@@ -123,6 +125,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/margin10"
                 app:layout_constraintTop_toBottomOf="@+id/addressLL" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
