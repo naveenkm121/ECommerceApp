@@ -16,6 +16,7 @@ import com.ecommerce.app.R
 import com.ecommerce.app.constants.IntentConstants
 import com.ecommerce.app.data.wishlist.WishlistItem
 import com.ecommerce.app.databinding.FragmentWishlistBinding
+import com.ecommerce.app.ui.activities.HomeActivity
 import com.ecommerce.app.ui.adapters.WishlistAdapter
 import com.ecommerce.app.ui.viewmodels.WishlistViewModel
 import com.ecommerce.app.utils.CommonSelectItemRVListerner
@@ -48,6 +49,7 @@ class WishlistFragment : Fragment(),CommonSelectItemRVListerner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_wishlist))
         setupRecyclerView()
         setupObservers()
         wishlistViewModel.getWishlist(null)

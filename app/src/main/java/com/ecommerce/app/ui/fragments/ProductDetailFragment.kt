@@ -67,7 +67,7 @@ class ProductDetailFragment : Fragment() {
          prodId= arguments?.getInt(IntentConstants.PRODUCT_ID)!!
         val prodBrand= arguments?.getString(IntentConstants.PRODUCT_BRAND).toString()
         viewModel.getProductDetailsById(prodId!!)
-        setupToolbar(prodBrand)
+       // setupToolbar(prodBrand)
         setupRecyclerView()
         setOnClickListener()
         setupObservers()
@@ -122,8 +122,6 @@ class ProductDetailFragment : Fragment() {
     private fun setOnClickListener() {
 
         binding.addToCartBTN.setOnClickListener {
-            //launchCartScreen()
-            DebugHandler.log("Hello Add to Cart")
             var cartReq: CartReq = CartReq()
             cartReq.prodId= prodId.toLong()
             cartReq.quantity=1

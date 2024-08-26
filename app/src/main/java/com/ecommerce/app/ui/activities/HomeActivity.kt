@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
         navView = binding.navView
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(
+            setOf(  R.id.homeFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -66,6 +66,18 @@ class HomeActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == navController.graph.startDestinationId) {
+                toggle.isDrawerIndicatorEnabled = true
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            } else {
+                toggle.isDrawerIndicatorEnabled = false
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            }
+        }
+
         setupMenuOption()
         bottomNavigationListerner()
     }
@@ -205,7 +217,6 @@ class HomeActivity : AppCompatActivity() {
         if (item.itemId == android.R.id.home) {
             DebugHandler.log("Hello Item =="+item.itemId.toString())
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                DebugHandler.log("Hello drawerLayout Open  ")
                 drawerLayout.closeDrawer(GravityCompat.START)
             } else {
                 // Handle fragment back navigation
