@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecommerce.app.R
 import com.ecommerce.app.constants.RequestApiType
 import com.ecommerce.app.constants.ScreenName
+import com.ecommerce.app.data.address.AddressItem
 import com.ecommerce.app.data.cart.CartData
 import com.ecommerce.app.data.cart.CartItem
+import com.ecommerce.app.data.cart.CartReq
+import com.ecommerce.app.data.wishlist.WishlistItem
 import com.ecommerce.app.databinding.FragmentCartBinding
 import com.ecommerce.app.ui.activities.HomeActivity
 import com.ecommerce.app.ui.adapters.CommonRVAdapter
@@ -23,7 +26,9 @@ import com.ecommerce.app.ui.viewmodels.CartViewModel
 import com.ecommerce.app.utils.AlertDialogListener
 import com.ecommerce.app.utils.CommonSelectItemRVListerner
 import com.ecommerce.app.utils.CommonUtility
+import com.ecommerce.app.utils.DebugHandler
 import com.ecommerce.app.utils.ResourceViewState
+import com.ecommerce.app.utils.SaveSharedPreference
 import com.ecommerce.app.utils.UICommon
 import com.ecommerce.app.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,8 +53,9 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_cart))
+        setupInitialView()
         setupObservers()
-        setupViews()
+        setupRecyclerView()
         setOnClickListener()
         viewModel.getCartItems(RequestApiType.REQUEST_GET_CART_ITEMS.value, "")
     }
@@ -60,45 +66,45 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
         binding.mrpValTV.setText(
             getString(
                 R.string.input_rs_symbol,
-                cartData.totalPrice.toString()
+                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice)
             )
         )
         binding.discountValTV.setText(
-            getString(
-                R.string.input_rs_symbol,
-                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalDiscountPrice - cartData.totalDiscountPrice)
-                    .toString()
-            )
+           getString(
+                    R.string.input_rs_symbol,
+               CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalDiscountPrice)
+        )
 
         )
         binding.totalValTV.setText(
             getString(
                 R.string.input_rs_symbol,
-                cartData.totalDiscountPrice.toString()
+                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice-cartData.totalDiscountPrice)
             )
         )
-
-        binding.dataLayout.visibility = View.VISIBLE
-        binding.footer.visibility = View.VISIBLE
-
+        binding.dataLayout.visibility=View.VISIBLE
+        binding.footer.visibility=View.VISIBLE
 
     }
 
-    private fun setupViews() {
+    private fun setupInitialView(){
+        binding.dataLayout.visibility=View.GONE
+        binding.footer.visibility=View.GONE
+        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
+    }
+    private fun setupRecyclerView() {
+
+
         adapter = CommonRVAdapter(ScreenName.FRAGMENT_CART.value, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-
-        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
-        binding.dataLayout.visibility = View.GONE
-        binding.footer.visibility = View.GONE
     }
-
 
     private fun setOnClickListener() {
 
         binding.proceedBTN.setOnClickListener {
             findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
+
         }
 
     }
@@ -110,14 +116,14 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
             when (it.status) {
                 ResourceViewState.Status.SUCCESS -> {
                     setProgressBar(false)
-//                    setupInitialUI(false)
                     if (it.data != null && it.data.status == 1) {
+
                         setDataOnViews(it.data.data)
+
                         if (!it.data.data.cartItems.isNullOrEmpty()) {
 
                             cartItemList = it.data.data.cartItems as ArrayList<CartItem>
                             adapter.setItems(cartItemList)
-
                         } else {
                             //binding.noResultIV.visibility = View.VISIBLE
                             Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_LONG)
@@ -136,7 +142,7 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
                             R.string.session_expired,
                             Toast.LENGTH_SHORT
                         ).show()
-                        activity?.let { it1 -> CommonUtility.logoutAppSession(it1) };
+                          activity?.let { it1 -> CommonUtility.logoutAppSession(it1) };
 
                     } else
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
@@ -157,6 +163,7 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
 
     override fun onSelectItemRVType(selectedItem: Any, selectedAction: String) {
         selectedItem as CartItem
+        DebugHandler.log("Hello Action Name == "+selectedAction)
         when (selectedAction) {
 
             ScreenName.ACTION_DELETE_CART.value -> {
@@ -181,14 +188,11 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
                 )
             }
 
-            ScreenName.ACTION_MINUS_FROM_CART.value -> {
-                if (selectedItem.quantity > 0) {
-                    viewModel.updateCart(
-                        RequestApiType.REQUEST_UPDATE_CART.value,
-                        selectedItem,
-                        selectedItem.id
-                    )
-                } else {
+            ScreenName.ACTION_MINUS_FROM_CART.value->{
+                if(selectedItem.quantity>0)
+                {
+                    viewModel.updateCart(RequestApiType.REQUEST_UPDATE_CART.value,selectedItem,selectedItem.id)
+                }else{
                     UICommon.showAlertDialog(
                         requireContext(), // Pass the context of the fragment
                         false, // Cancellable
@@ -210,13 +214,10 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
                 }
             }
 
-            ScreenName.ACTION_ADD_ITEM_TO_CART.value -> {
-                if (selectedItem.quantity > 0) {
-                    viewModel.updateCart(
-                        RequestApiType.REQUEST_UPDATE_CART.value,
-                        selectedItem,
-                        selectedItem.id
-                    )
+            ScreenName.ACTION_ADD_ITEM_TO_CART.value->{
+                if(selectedItem.quantity>0)
+                {
+                    viewModel.updateCart(RequestApiType.REQUEST_UPDATE_CART.value,selectedItem,selectedItem.id)
                 }
 
             }

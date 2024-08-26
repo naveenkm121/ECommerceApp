@@ -208,7 +208,9 @@
                     android:layout_margin="@dimen/margin10"
                     android:layout_marginStart="8dp"
                     android:text="@string/total_amount"
+                    android:textSize="@dimen/text_16"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewLine"
@@ -221,6 +223,8 @@
                     android:layout_margin="@dimen/margin10"
                     android:text="@string/input_rs_symbol"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewLine" />

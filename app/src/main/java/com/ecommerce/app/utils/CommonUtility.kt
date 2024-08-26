@@ -555,8 +555,10 @@ class CommonUtility {
 
         }
 
-        fun roundOffToTwoDecimalPlaces(value: Double): Double {
-            return BigDecimal(value).setScale(2, RoundingMode.HALF_UP).toDouble()
+        fun roundOffToTwoDecimalPlaces(value: Double): String {
+            //return BigDecimal(value).setScale(2, RoundingMode.HALF_UP).toDouble()
+            return String.format("%.2f", value)
+
         }
 
 

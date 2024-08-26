@@ -245,8 +245,8 @@ class CommonViewHolder(
                 itemBinding as ItemCartBinding
                 itemBinding.productBrandTV.text = item.brand
                 itemBinding.productNameTV.text=item.title
-                itemBinding.discountPriceTV.text=context.getString(R.string.input_rs_symbol,item.totalDiscountPrice.toString())
-                itemBinding.priceTV.text=context.getString(R.string.input_rs_symbol,item.price.toString())
+                itemBinding.discountPriceTV.text=context.getString(R.string.input_rs_symbol,CommonUtility.roundOffToTwoDecimalPlaces(item.discountPrice))
+                itemBinding.priceTV.text=context.getString(R.string.input_rs_symbol,CommonUtility.roundOffToTwoDecimalPlaces(item.price))
                 itemBinding.discountTV.text="${item.discount_per}%"
                 itemBinding.priceTV.setPaintFlags(itemBinding.priceTV.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
                 //itemBinding.quantityTV.text=context.getString(R.string.input_quantity,item.quantity.toString())
