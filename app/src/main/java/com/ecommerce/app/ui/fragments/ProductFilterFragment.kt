@@ -16,6 +16,7 @@ import com.ecommerce.app.data.filter.Filter
 import com.ecommerce.app.data.filter.FilterItem
 import com.ecommerce.app.data.filter.FilterRes
 import com.ecommerce.app.databinding.FragmentProductFilterBinding
+import com.ecommerce.app.ui.activities.HomeActivity
 import com.ecommerce.app.ui.adapters.FilterItemsAdapter
 import com.ecommerce.app.ui.adapters.FilterTypeAdapter
 import com.ecommerce.app.utils.CommonUtility
@@ -44,7 +45,8 @@ class ProductFilterFragment : Fragment(), FilterTypeAdapter.SelectFilterTypeList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_filter))
+        //setupToolbar()
         setupFilterData()
         setupRecyclerView()
 

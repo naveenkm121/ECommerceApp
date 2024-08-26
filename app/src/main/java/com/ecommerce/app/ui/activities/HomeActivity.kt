@@ -6,9 +6,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,8 +20,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ecommerce.app.R
 import com.ecommerce.app.databinding.ActivityHomeBinding
-import com.ecommerce.app.ui.fragments.CartFragment
-import com.ecommerce.app.ui.fragments.WishlistFragment
 import com.ecommerce.app.utils.DebugHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -45,7 +43,6 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
 
         navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -69,13 +66,16 @@ class HomeActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
-
         setupMenuOption()
         bottomNavigationListerner()
     }
 
-
+    public fun setupToolbar(title: String) {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.title = title
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
     private fun bottomNavigationListerner() {
         binding.appBarMain.bottomNavigation.setOnNavigationItemSelectedListener(
@@ -182,35 +182,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun launchWishlistScreen(){
-       // showBottomNavigationBar(false)
         navController.navigate(R.id.wishlistFragment)
     }
     private fun launchCartScreen(){
-     //  showBottomNavigationBar(false)
         navController.navigate(R.id.cartFragment)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            DebugHandler.log("Hello HomeItem")
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START)
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-            //removeFragmentFromStack()
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -223,16 +201,25 @@ class HomeActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun removeFragmentFromStack() {
-        val fragmentManager = supportFragmentManager
-        if (fragmentManager.backStackEntryCount > 0) {
-            fragmentManager.popBackStack()
-        } else {
-            finish()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            DebugHandler.log("Hello Item =="+item.itemId.toString())
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                DebugHandler.log("Hello drawerLayout Open  ")
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                // Handle fragment back navigation
+                if (navController.currentDestination?.id != navController.graph.startDestinationId) {
+                    DebugHandler.log("Hello currentDestination Open  $navController.currentDestination?.id")
+                    navController.popBackStack() // Navigate back in the fragment stack
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START)
+                }
+            }
+            return true
         }
+        return super.onOptionsItemSelected(item)
     }
-
-
 
 
 }

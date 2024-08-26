@@ -20,6 +20,7 @@ import com.ecommerce.app.data.product.ProductItem
 import com.ecommerce.app.data.product.ProductReqParam
 import com.ecommerce.app.databinding.BottomSheetSortDialogBinding
 import com.ecommerce.app.databinding.FragmentProductlistBinding
+import com.ecommerce.app.ui.activities.HomeActivity
 import com.ecommerce.app.ui.adapters.ProductPageAdapter
 import com.ecommerce.app.ui.viewmodels.ProductListViewModel
 import com.ecommerce.app.utils.DebugHandler
@@ -55,6 +56,7 @@ class ProductListFragment : Fragment(), ProductPageAdapter.CardItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        // filterRes= GsonHelper.fromJson(arguments?.getString(IntentConstants.PRODUCT_FILTER_DATA)!!,FilterRes::class.java)!!
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_products))
         setOnClickListener()
         setupRecyclerView()
         setupObservers()

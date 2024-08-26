@@ -63,6 +63,7 @@ class ProductDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_product_details))
          prodId= arguments?.getInt(IntentConstants.PRODUCT_ID)!!
         val prodBrand= arguments?.getString(IntentConstants.PRODUCT_BRAND).toString()
         viewModel.getProductDetailsById(prodId!!)

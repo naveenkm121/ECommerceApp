@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecommerce.app.R
 import com.ecommerce.app.R.color.black
 import com.ecommerce.app.R.color.red
+import com.ecommerce.app.constants.HomeViewTypeEnum
 import com.ecommerce.app.constants.IntentConstants
 import com.ecommerce.app.constants.RequestApiType
 import com.ecommerce.app.constants.ScreenName
@@ -58,9 +60,9 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //setHasOptionsMenu(true)
-        setupToolbar(getString(R.string.fragment_add_address))
-        setupMenuOption()
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_add_address))
+      //  setHasOptionsMenu(true)
+      //  setupMenuOption()
         setupViews()
         setupRecyclerView()
         setupObservers()
@@ -74,14 +76,21 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun setupToolbar(title: String) {
-        val toolbar: Toolbar = requireActivity().findViewById<View>(R.id.toolbar) as Toolbar
-        toolbar.setTitle(title)
-    }
     private fun setupViews() {
         binding.topProgressLyt.addressDotView.setBackgroundTintList(ColorStateList.valueOf(requireContext().getColor(red)))
         binding.topProgressLyt.addressLineView.setBackgroundColor(requireContext().getColor(red))
         binding.topProgressLyt.addressTV.setTextColor(requireContext().getColor(black))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // Handle the back arrow click here
+                findNavController().popBackStack() // Or requireActivity().onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupMenuOption() {
@@ -278,18 +287,6 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
         super.onDestroy()
         (activity as? HomeActivity)?.showBottomNavigationBar(true)
     }
-    /*    fun onBackPressFragment()
-        {
-            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    // Pop the current fragment from the back stack
-                    requireActivity().supportFragmentManager.popBackStack()
 
-                    // Optionally, you can add additional logic here
-                    // For example, navigate to another fragment or activity
-                    // Or perform some action specific to this fragment
-                }
-            })
-        }*/
 
 }

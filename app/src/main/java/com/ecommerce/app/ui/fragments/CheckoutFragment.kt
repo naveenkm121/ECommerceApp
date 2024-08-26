@@ -56,6 +56,7 @@ class CheckoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_checkout))
         setupViews()
         setupObservers()
         viewModel.getCartItems(RequestApiType.REQUEST_GET_CART_ITEMS.value, "")
