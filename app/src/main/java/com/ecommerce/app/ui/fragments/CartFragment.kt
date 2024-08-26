@@ -53,6 +53,7 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_cart))
+        setupInitialView()
         setupObservers()
         setupRecyclerView()
         setOnClickListener()
@@ -81,11 +82,19 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
                 CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice-cartData.totalDiscountPrice)
             )
         )
+        binding.dataLayout.visibility=View.VISIBLE
+        binding.footer.visibility=View.VISIBLE
 
-        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
     }
 
+    private fun setupInitialView(){
+        binding.dataLayout.visibility=View.GONE
+        binding.footer.visibility=View.GONE
+        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
+    }
     private fun setupRecyclerView() {
+
+
         adapter = CommonRVAdapter(ScreenName.FRAGMENT_CART.value, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
@@ -102,13 +111,15 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
 
 
     private fun setupObservers() {
+
         viewModel.response.observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 ResourceViewState.Status.SUCCESS -> {
                     setProgressBar(false)
-//                    setupInitialUI(false)
                     if (it.data != null && it.data.status == 1) {
+
                         setDataOnViews(it.data.data)
+
                         if (!it.data.data.cartItems.isNullOrEmpty()) {
 
                             cartItemList = it.data.data.cartItems as ArrayList<CartItem>

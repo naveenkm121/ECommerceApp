@@ -57,13 +57,13 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_checkout))
-        setupViews()
+        setupInitialView()
         setupObservers()
         viewModel.getCartItems(RequestApiType.REQUEST_GET_CART_ITEMS.value, "")
         addressViewModel.getAddress(ScreenName.FRAGMENT_ADDRESS.value)
     }
 
-    private fun setupViews() {
+    private fun setupInitialView() {
         binding.topProgressLyt.addressDotView.setBackgroundTintList(
             ColorStateList.valueOf(requireContext().getColor(
                 red
@@ -78,8 +78,12 @@ class CheckoutFragment : Fragment() {
         binding.topProgressLyt.checkoutLineView.setBackgroundColor(requireContext().getColor(red))
         binding.topProgressLyt.checkoutTV.setTextColor(requireContext().getColor(black))
 
+        binding.dataLayout.visibility=View.GONE
+        binding.footer.visibility=View.GONE
+        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
 
     }
+
 
     private fun setProgressBar(b: Boolean) {
         binding.progressBar.visibility = if (!b) View.GONE else View.VISIBLE
@@ -107,7 +111,8 @@ class CheckoutFragment : Fragment() {
             )
         )
 
-        ((requireActivity() as? HomeActivity)?.showBottomNavigationBar(false))
+        binding.dataLayout.visibility=View.VISIBLE
+        binding.footer.visibility=View.VISIBLE
     }
 
     private fun setAddressDataOnViews(item: AddressItem) {
