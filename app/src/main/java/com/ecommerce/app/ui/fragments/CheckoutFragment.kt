@@ -90,7 +90,7 @@ class CheckoutFragment : Fragment() {
         binding.mrpValTV.setText(
             getString(
                 R.string.input_rs_symbol,
-                cartData.totalPrice.toString()
+                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice)
             )
         )
         binding.discountValTV.setText(
@@ -103,7 +103,7 @@ class CheckoutFragment : Fragment() {
         binding.totalValTV.setText(
             getString(
                 R.string.input_rs_symbol,
-                cartData.totalPrice.toString()
+                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice-cartData.totalDiscountPrice).toString()
             )
         )
 

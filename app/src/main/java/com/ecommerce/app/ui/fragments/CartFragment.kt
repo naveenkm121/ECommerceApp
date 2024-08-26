@@ -65,20 +65,20 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
         binding.mrpValTV.setText(
             getString(
                 R.string.input_rs_symbol,
-                cartData.totalPrice.toString()
+                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice)
             )
         )
         binding.discountValTV.setText(
-            getString(
-                R.string.input_rs_symbol,
-                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalDiscountPrice-cartData.totalDiscountPrice).toString()
-            )
+           getString(
+                    R.string.input_rs_symbol,
+               CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalDiscountPrice)
+        )
 
         )
         binding.totalValTV.setText(
             getString(
                 R.string.input_rs_symbol,
-                cartData.totalDiscountPrice.toString()
+                CommonUtility.roundOffToTwoDecimalPlaces(cartData.totalPrice-cartData.totalDiscountPrice)
             )
         )
 
