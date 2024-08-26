@@ -52,11 +52,13 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_cart))
         setupObservers()
         setupRecyclerView()
         setOnClickListener()
         viewModel.getCartItems(RequestApiType.REQUEST_GET_CART_ITEMS.value, "")
     }
+
 
     private fun setDataOnViews(cartData: CartData) {
         binding.priceHeadingTV.setText(getString(R.string.price_details) + " ( ${cartData.totalProducts} Items)")
@@ -104,6 +106,7 @@ class CartFragment : Fragment(), CommonSelectItemRVListerner {
             when (it.status) {
                 ResourceViewState.Status.SUCCESS -> {
                     setProgressBar(false)
+//                    setupInitialUI(false)
                     if (it.data != null && it.data.status == 1) {
                         setDataOnViews(it.data.data)
                         if (!it.data.data.cartItems.isNullOrEmpty()) {

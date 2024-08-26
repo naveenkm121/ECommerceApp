@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout
@@ -69,7 +70,12 @@ class HomeActivity : AppCompatActivity() {
         bottomNavigationListerner()
     }
 
-
+    public fun setupToolbar(title: String) {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.title = title
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
     private fun bottomNavigationListerner() {
         binding.appBarMain.bottomNavigation.setOnNavigationItemSelectedListener(
@@ -199,10 +205,12 @@ class HomeActivity : AppCompatActivity() {
         if (item.itemId == android.R.id.home) {
             DebugHandler.log("Hello Item =="+item.itemId.toString())
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                DebugHandler.log("Hello drawerLayout Open  ")
                 drawerLayout.closeDrawer(GravityCompat.START)
             } else {
                 // Handle fragment back navigation
                 if (navController.currentDestination?.id != navController.graph.startDestinationId) {
+                    DebugHandler.log("Hello currentDestination Open  $navController.currentDestination?.id")
                     navController.popBackStack() // Navigate back in the fragment stack
                 } else {
                     drawerLayout.openDrawer(GravityCompat.START)
@@ -212,5 +220,6 @@ class HomeActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 }

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecommerce.app.R
 import com.ecommerce.app.R.color.black
 import com.ecommerce.app.R.color.red
+import com.ecommerce.app.constants.HomeViewTypeEnum
 import com.ecommerce.app.constants.IntentConstants
 import com.ecommerce.app.constants.RequestApiType
 import com.ecommerce.app.constants.ScreenName
@@ -59,9 +60,9 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
-        setupToolbar(getString(R.string.fragment_add_address))
-        setupMenuOption()
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_add_address))
+      //  setHasOptionsMenu(true)
+      //  setupMenuOption()
         setupViews()
         setupRecyclerView()
         setupObservers()
@@ -75,12 +76,6 @@ class AddressFragment : Fragment(), CommonSelectItemRVListerner {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun setupToolbar(title: String) {
-        val toolbar: Toolbar = requireActivity().findViewById<View>(R.id.toolbar) as Toolbar
-        toolbar.setTitle(title)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
     private fun setupViews() {
         binding.topProgressLyt.addressDotView.setBackgroundTintList(ColorStateList.valueOf(requireContext().getColor(red)))
         binding.topProgressLyt.addressLineView.setBackgroundColor(requireContext().getColor(red))

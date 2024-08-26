@@ -35,6 +35,7 @@
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/padding12"
+                android:layout_marginTop="@dimen/margin10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topProgressLyt">

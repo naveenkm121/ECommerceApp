@@ -239,11 +239,8 @@ class AddAddressFragment : Fragment() {
                       setProgressBar(true)
                     Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show()
                 }
-
             }
-
         })
-
 
     }
 

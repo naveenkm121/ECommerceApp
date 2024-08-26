@@ -14,6 +14,7 @@ import com.ecommerce.app.constants.IntentConstants
 import com.ecommerce.app.constants.ScreenName
 import com.ecommerce.app.data.category.Category
 import com.ecommerce.app.databinding.FragmentCategoryBinding
+import com.ecommerce.app.ui.activities.HomeActivity
 import com.ecommerce.app.ui.adapters.CommonRVAdapter
 import com.ecommerce.app.ui.viewmodels.CategoryViewModel
 import com.ecommerce.app.utils.CommonSelectItemRVListerner
@@ -41,6 +42,7 @@ class CategoryFragment : Fragment(),CommonSelectItemRVListerner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as HomeActivity).setupToolbar(getString(R.string.fragment_category))
         //setHasOptionsMenu(true)
         setupRecyclerView()
         setupObservers()
